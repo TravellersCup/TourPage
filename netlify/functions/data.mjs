@@ -1,0 +1,6 @@
+import { getStore } from '@netlify/blobs';
+import fs from 'node:fs/promises';
+const headers={'Content-Type':'application/json','Cache-Control':'no-store'};
+async function isAuthed(req){const cookie=req.headers.get('cookie')||'';const m=cookie.match(/(?:^|;\s*)tt_admin=([^;]+)/);if(!m)return false;const secret=process.env.ADMIN_SESSION_SECRET;if(!secret)return false;const enc=new TextEncoder();const key=await crypto.subtle.importKey('raw',enc.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);const sig=await crypto.subtle.sign('HMAC',key,enc.encode('travellers-admin-v1'));return m[1]===Buffer.from(sig).toString('base64url')}
+async function initial(){const text=await fs.readFile(new URL('../../default-data.json',import.meta.url),'utf8');return JSON.parse(text)}
+export default async(req)=>{const store=getStore({name:'travellers-tour',consistency:'strong'});if(req.method==='GET'){let data=await store.get('site-data',{type:'json',consistency:'strong'});if(!data){data=await initial();await store.setJSON('site-data',data)}return new Response(JSON.stringify(data),{headers})}if(req.method==='POST'){if(!(await isAuthed(req)))return new Response('Unauthorized',{status:401});const data=await req.json();await store.setJSON('site-data',data);return new Response(JSON.stringify({ok:true}),{headers})}return new Response('Method not allowed',{status:405})}

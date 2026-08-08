@@ -1,0 +1,116 @@
+{
+  "champion": {
+    "name": "Kai Lucas",
+    "event": "Ampol Wolf Stroke Play",
+    "score": "Champion",
+    "image": "images/winner-1.png"
+  },
+  "players": [
+    {
+      "id": "kai-lucas",
+      "name": "Kai Lucas",
+      "status": "Tour Member",
+      "points": 960,
+      "wins": 4,
+      "seconds": 1,
+      "majors": 2,
+      "mvp": 48,
+      "image": "",
+      "bio": "Current season leader and two-time major champion.",
+      "longBio": "Kai Lucas has established himself as one of the leading players on the Travellers Tour, combining regular-season wins with strong performances in the majors."
+    },
+    {
+      "id": "fletcher-gaffney",
+      "name": "Fletcher Gaffney",
+      "status": "Tour Member",
+      "points": 780,
+      "wins": 2,
+      "seconds": 3,
+      "majors": 0,
+      "mvp": 20,
+      "image": "",
+      "bio": "A consistent contender known for strong team-event performances.",
+      "longBio": "Fletcher Gaffney is a consistent presence on the Travellers Tour, particularly dangerous in team and alternate-format events."
+    },
+    {
+      "id": "xavier-minogue",
+      "name": "Xavier Minogue",
+      "status": "Tour Member",
+      "points": 710,
+      "wins": 2,
+      "seconds": 2,
+      "majors": 0,
+      "mvp": 18,
+      "image": "",
+      "bio": "A dangerous competitor with a growing record of tour success.",
+      "longBio": "Xavier Minogue continues to build a strong tour record and has become a regular threat across the season schedule."
+    }
+  ],
+  "tournaments": [
+    {
+      "id": "travellers-masters-2026",
+      "name": "Travellers Masters",
+      "course": "Malvern Valley Golf Course",
+      "date": "2026-04-18",
+      "type": "Major",
+      "winner": "Kai Lucas",
+      "score": "Champion",
+      "status": "completed",
+      "image": "images/winner-2.png"
+    },
+    {
+      "id": "brighton-crystal-cup-2026",
+      "name": "Brighton Crystal Cup",
+      "course": "Brighton Golf Course",
+      "date": "2026-06-20",
+      "type": "Major",
+      "winner": "Kai Lucas",
+      "score": "82 (+15)",
+      "status": "completed",
+      "image": "images/winner-3.png"
+    },
+    {
+      "id": "next-major-2026",
+      "name": "Next Major Championship",
+      "course": "TBA",
+      "date": "2026-09-20",
+      "type": "Major",
+      "winner": "",
+      "score": "",
+      "status": "upcoming",
+      "image": ""
+    }
+  ],
+  "news": [
+    {
+      "id": "kai-wins-ampol",
+      "headline": "Kai Lucas wins the Ampol Wolf Stroke Play",
+      "date": "2026-08-02",
+      "summary": "Kai Lucas added another victory to his season and strengthened his position at the top of the standings.",
+      "body": "Kai Lucas added another victory to his 2026 campaign at the Ampol Wolf Stroke Play. The result strengthened his position in the season standings and continued a strong run of form across the Travellers Tour season.",
+      "image": "images/winner-1.png"
+    }
+  ],
+  "gallery": [
+    "images/winner-1.png",
+    "images/winner-2.png",
+    "images/winner-3.png"
+  ],
+  "shop": [
+    {
+      "id": "champion-poster",
+      "name": "Travellers Tour Champion Poster",
+      "price": "$25.00",
+      "description": "A premium poster celebrating Travellers Tour champions.",
+      "image": "images/winner-1.png",
+      "link": ""
+    }
+  ],
+  "records": [
+    {
+      "id": "most-major-wins",
+      "title": "Most Major Wins",
+      "description": "Kai Lucas \u2014 2 major championship victories."
+    }
+  ]
+}
