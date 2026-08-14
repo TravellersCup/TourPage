@@ -4,7 +4,10 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&
 const dateFmt=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
 async function pApi(path,opts={}){const r=await fetch('/.netlify/functions/'+path,opts);if(r.status===401)throw new Error('AUTH');if(!r.ok)throw new Error(await r.text());const ct=r.headers.get('content-type')||'';return ct.includes('json')?r.json():r.text()}
 function message(t){portalMessage.textContent=t;portalMessage.hidden=false;setTimeout(()=>portalMessage.hidden=true,3500)}
-function setupNav(){menuButton.onclick=()=>nav.classList.toggle('open')}
+function setupNav(){
+ menuButton.onclick=()=>nav.classList.toggle('open');
+ document.querySelectorAll('.nav-dropbtn').forEach(btn=>btn.addEventListener('click',()=>{if(window.innerWidth<=900)btn.parentElement.classList.toggle('open')}));
+}
 function normaliseWitb(p){
  if(Array.isArray(p?.witbItems)) return p.witbItems.map(x=>({club:x.club||'',brand:x.brand||'',shaft:x.shaft||'',grip:x.grip||'',photo:x.photo||'',modification:x.modification||''}));
  if(typeof p?.witb==='string' && p.witb.trim()) return [{club:'Other',brand:'',shaft:'',grip:'',photo:'',modification:p.witb.trim()}];

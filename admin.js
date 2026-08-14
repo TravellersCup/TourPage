@@ -1,4 +1,5 @@
 let DATA=null;
+let MEMBERS_DATA=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const slug=s=>s.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Date.now();
 async function api(path,opts={}){const r=await fetch('/.netlify/functions/'+path,opts);if(r.status===401)throw new Error('AUTH');if(!r.ok)throw new Error(await r.text());const ct=r.headers.get('content-type')||'';return ct.includes('json')?r.json():r.text()}
@@ -40,7 +41,7 @@ deletePoll.onclick=async()=>{const i=+ePollSelect.value;if(!DATA.polls[i])return
 function renderMembers(){memberSelect.innerHTML=MEMBERS.map((m,i)=>`<option value="${i}">${esc(m.username)}</option>`).join('');const playerOpts='<option value="">Not linked</option>'+DATA.players.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');memberPlayerId.innerHTML=playerOpts;newMemberPlayerId.innerHTML=playerOpts;loadMember()}
 function loadMember(){const m=MEMBERS[+memberSelect.value||0];if(!m){memberUsername.value='';memberId.value='';memberSince.value='';memberStatus.value='';memberCardLevel.value='';memberPlayerId.value='';return}memberUsername.value=m.username||'';memberId.value=m.memberId||'';memberSince.value=m.memberSince||'';memberStatus.value=m.status||'Tour Member';memberCardLevel.value=m.cardLevel||'Member';memberValidThrough.value=m.validThrough||'';memberPlayerId.value=m.playerId||'';memberNewPassword.value=''}
 memberSelect.onchange=loadMember;
-saveMember.onclick=async()=>{const m=MEMBERS[+memberSelect.value];if(!m)return;await api('members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',username:m.username,playerId:memberPlayerId.value,memberId:memberId.value.trim(),memberSince:memberSince.value.trim(),status:memberStatus.value.trim(),cardLevel:memberCardLevel.value.trim(),newPassword:memberNewPassword.value})});MEMBERS=await api('members',{cache:'no-store'});renderMembers();loadHowItWorks();alert('Member details saved.')}
+saveMember.onclick=async()=>{const m=MEMBERS[+memberSelect.value];if(!m)return;await api('members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',username:m.username,playerId:memberPlayerId.value,memberId:memberId.value.trim(),memberSince:memberSince.value.trim(),status:memberStatus.value.trim(),cardLevel:memberCardLevel.value.trim(),newPassword:memberNewPassword.value})});MEMBERS=await api('members',{cache:'no-store'});renderMembers();loadHowItWorks();renderPollResults();renderAttendanceResults();alert('Member details saved.')}
 addMemberForm.onsubmit=async e=>{e.preventDefault();await api('members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',username:newMemberUsername.value.trim(),newPassword:newMemberPassword.value,playerId:newMemberPlayerId.value,memberId:newMemberId.value.trim(),memberSince:newMemberSince.value.trim(),status:newMemberStatus.value.trim(),cardLevel:newMemberCardLevel.value.trim()})});MEMBERS=await api('members',{cache:'no-store'});renderMembers();e.target.reset();newMemberSince.value='2026';newMemberStatus.value='Tour Member';newMemberCardLevel.value='Member';alert('Portal member added.')}
 
 check();
@@ -58,3 +59,38 @@ howItWorksForm.onsubmit=async e=>{
  await save();
  alert('How the Tour Works page updated.');
 };
+
+
+function renderPollResults(){
+ const box=document.getElementById('pollResultsAdmin'); if(!box)return;
+ const polls=(MEMBERS_DATA?.polls||[]);
+ if(!polls.length){box.innerHTML='<p class="meta">No polls have been created yet.</p>';return}
+ box.innerHTML=polls.map(p=>{
+   const votes=p.votes||{};
+   const total=Object.keys(votes).length;
+   const counts=(p.options||[]).map((o,i)=>Object.values(votes).filter(v=>+v===i).length);
+   return `<article class="admin-insight-card"><h3>${esc(p.question)}</h3><p class="meta">${total} vote${total===1?'':'s'} total</p>${(p.options||[]).map((o,i)=>{
+      const count=counts[i]||0,pct=total?Math.round(count/total*100):0;
+      return `<div class="result-row"><div style="flex:1"><strong>${esc(typeof o==='string'?o:o.text)}</strong><div class="result-bar"><span style="width:${pct}%"></span></div></div><div><strong>${count}</strong> (${pct}%)</div></div>`
+   }).join('')}</article>`
+ }).join('');
+}
+function renderAttendanceResults(){
+ const box=document.getElementById('attendanceResultsAdmin'); if(!box)return;
+ const tournaments=(DATA?.tournaments||[]).filter(t=>t.status!=='completed');
+ if(!tournaments.length){box.innerHTML='<p class="meta">No upcoming tournaments.</p>';return}
+ const members=MEMBERS_DATA?.members||[];
+ const attendance=MEMBERS_DATA?.attendance||{};
+ box.innerHTML=tournaments.map(t=>{
+   const event=attendance[t.id]||{};
+   const groups={going:[],maybe:[],'not-going':[],'no-response':[]};
+   members.forEach(m=>{const status=event[m.username]||'no-response';(groups[status]||groups['no-response']).push(m.username)});
+   const chips=a=>a.length?a.map(x=>`<span class="attendance-chip">${esc(x)}</span>`).join(''):'<span class="meta">None</span>';
+   return `<article class="admin-insight-card"><h3>${esc(t.name)}</h3>
+    <div class="attendance-group"><h4>Going (${groups.going.length})</h4>${chips(groups.going)}</div>
+    <div class="attendance-group"><h4>Maybe (${groups.maybe.length})</h4>${chips(groups.maybe)}</div>
+    <div class="attendance-group"><h4>Not Going (${groups['not-going'].length})</h4>${chips(groups['not-going'])}</div>
+    <div class="attendance-group"><h4>No Response (${groups['no-response'].length})</h4>${chips(groups['no-response'])}</div>
+   </article>`
+ }).join('');
+}

@@ -1,5 +1,37 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Player Portal | The Travellers Tour</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="site-header"><a class="brand" href="index.html"><img src="images/logo.png" alt="Travellers Tour logo"><span>THE TRAVELLERS TOUR</span></a><button class="menu-button" id="menuButton">☰</button><nav id="nav"><a href="index.html">Home</a><a href="standings.html">Standings</a><a href="mvp.html">MVP</a><a href="players.html">Players</a><a href="tournaments.html">Tournaments</a><a href="records.html">Records</a><a href="news.html">News</a><a href="gallery.html">Gallery</a><a href="shop.html">Shop</a><a href="portal.html">Player Portal</a><a href="admin.html">Admin</a></nav></header>
+<header class="site-header">
+  <a class="brand" href="index.html"><img src="images/logo.png" alt="Travellers Tour logo"><span>THE TRAVELLERS TOUR</span></a>
+  <button class="menu-button" id="menuButton">☰</button>
+  <nav id="nav" class="main-nav">
+    <a href="index.html">Home</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropbtn" type="button">Tour ▾</button>
+      <div class="nav-dropmenu">
+        <a href="how-it-works.html">How the Tour Works</a>
+        <a href="standings.html">Season Standings</a>
+        <a href="mvp.html">MVP Golden Ball</a>
+        <a href="records.html">Event Records</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropbtn" type="button">Players ▾</button>
+      <div class="nav-dropmenu">
+        <a href="players.html">Player Profiles</a>
+        <a href="witb.html">What's in the Bag</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropbtn" type="button">Events ▾</button>
+      <div class="nav-dropmenu">
+        <a href="tournaments.html">Tournaments</a>
+      </div>
+    </div>
+    <a href="news.html">News</a>
+    <a href="shop.html">Shop</a>
+    <a href="portal.html">Player Portal</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
 <main>
 <div id="portalLogin" class="portal-login"><img src="images/logo.png" alt=""><p class="eyebrow">Members only</p><h2>Player Portal</h2><p>Log in with your Travellers Tour member username and password.</p><form id="portalLoginForm"><label>Username<input id="portalUsername" autocomplete="username" required></label><label>Password<input id="portalPassword" type="password" autocomplete="current-password" required></label><button class="button">Log In</button><p id="portalLoginError" class="error" hidden>Incorrect username or password.</p></form></div>
 <div id="portalContent" class="portal-shell" hidden><div class="portal-header"><div><p class="eyebrow">Member dashboard</p><h1 id="portalWelcome">Player Portal</h1></div><div class="portal-actions"><a class="secondary-button" href="tournaments.html">Public Attendance</a><button id="portalLogout" class="secondary-button">Log Out</button></div></div><div id="portalMessage" class="portal-message" hidden></div>

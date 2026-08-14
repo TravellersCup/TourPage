@@ -3,7 +3,11 @@ async function loadData(){const r=await fetch('/.netlify/functions/data',{cache:
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const dateFmt=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
 const media=src=>src?`<div class="media-frame"><img src="${esc(src)}" alt=""></div>`:`<div class="media-frame"><span class="meta">No photo</span></div>`;
-function setupNav(){const b=document.getElementById('menuButton'),n=document.getElementById('nav');if(n&&!n.querySelector('a[href="witb.html"]')){const w=document.createElement('a');w.href='witb.html';w.textContent="What's in the Bag";const portal=n.querySelector('a[href="portal.html"]'),admin=n.querySelector('a[href="admin.html"]');if(portal)n.insertBefore(w,portal);else if(admin)n.insertBefore(w,admin);else n.appendChild(w)}
+function setupNav(){
+ const b=document.getElementById('menuButton'),n=document.getElementById('nav');
+ if(b&&n)b.onclick=()=>n.classList.toggle('open');
+ document.querySelectorAll('.nav-dropbtn').forEach(btn=>btn.addEventListener('click',()=>{if(window.innerWidth<=900)btn.parentElement.classList.toggle('open')}));
+}
 if(n&&!n.querySelector('a[href="how-it-works.html"]')){const h=document.createElement('a');h.href='how-it-works.html';h.textContent='How the Tour Works';const portal=n.querySelector('a[href="portal.html"]'),admin=n.querySelector('a[href="admin.html"]');if(portal)n.insertBefore(h,portal);else if(admin)n.insertBefore(h,admin);else n.appendChild(h)}
 if(n&&!n.querySelector('a[href="portal.html"]')){const a=document.createElement('a');a.href='portal.html';a.textContent='Player Portal';const admin=n.querySelector('a[href="admin.html"]');if(admin)n.insertBefore(a,admin);else n.appendChild(a)}if(b&&n)b.onclick=()=>n.classList.toggle('open')}
 
