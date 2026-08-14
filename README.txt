@@ -34,11 +34,24 @@ PLAYER PORTAL UPDATE
 The player portal adds attendance, personal stats, profile editing, What's in the Bag, voting polls and digital membership cards. Attendance responses appear publicly on the Tournaments page. Admin can create/edit/delete polls and manage member IDs, member-since, status, card level, linked player and portal passwords.
 
 INITIAL PORTAL ACCOUNTS
-Four usernames are preconfigured in the code: KAI, FLETCHER, XAVIER and ANDRE. Their password VALUES must NOT be committed to GitHub. Add the following environment-variable KEYS in Netlify and use the password values supplied separately by the Tour Admin:
-PLAYER_PASSWORD_KAI
-PLAYER_PASSWORD_FLETCHER
-PLAYER_PASSWORD_XAVIER
-PLAYER_PASSWORD_ANDRE
+Four usernames are preconfigured in the code: KAI, FLETCHER, XAVIER and ANDRE. Their password VALUES must NOT be committed to GitHub. Add the following environment-variable KEYS in Netlify and use SHA-256 hashes of the initial PINs (not the PINs themselves):
+PLAYER_PASSWORD_HASH_KAI
+PLAYER_PASSWORD_HASH_FLETCHER
+PLAYER_PASSWORD_HASH_XAVIER
+PLAYER_PASSWORD_HASH_ANDRE
 Set them as secret environment variables for Production (and the other deploy contexts if you use them).
 
 After a password is reset in the Admin dashboard, the reset password is stored as a salted scrypt hash in Netlify Blobs and overrides the initial environment-variable password.
+
+
+IMPORTANT — HASHED INITIAL PLAYER PASSWORDS
+To avoid Netlify secret scanning false positives on short numeric PINs, store only SHA-256 hashes in Netlify.
+The members still type their original PINs into the portal.
+
+Use these Netlify environment variables:
+PLAYER_PASSWORD_HASH_KAI = f34eb9d345d7d40d2d2ebf903d2c29cc39efe8d52b2f909d58b6f02b5b6d5c82
+PLAYER_PASSWORD_HASH_FLETCHER = cbe52a3141e613d876a31f903e8716973cca352e37b43fceb68089f5453870ad
+PLAYER_PASSWORD_HASH_XAVIER = 7a5df5ffa0dec2228d90b8d0a0f1b0767b748b0a41314c123075b8289e4e053f
+PLAYER_PASSWORD_HASH_ANDRE = 73a2af8864fc500fa49048bf3003776c19938f360e56bd03663866fb3087884a
+
+These hash values are not passwords and do not reveal the PINs directly. They do not need to be marked as secret, but may be if you prefer.
