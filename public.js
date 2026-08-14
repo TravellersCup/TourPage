@@ -8,8 +8,6 @@ function setupNav(){
  if(b&&n)b.onclick=()=>n.classList.toggle('open');
  document.querySelectorAll('.nav-dropbtn').forEach(btn=>btn.addEventListener('click',()=>{if(window.innerWidth<=900)btn.parentElement.classList.toggle('open')}));
 }
-if(n&&!n.querySelector('a[href="how-it-works.html"]')){const h=document.createElement('a');h.href='how-it-works.html';h.textContent='How the Tour Works';const portal=n.querySelector('a[href="portal.html"]'),admin=n.querySelector('a[href="admin.html"]');if(portal)n.insertBefore(h,portal);else if(admin)n.insertBefore(h,admin);else n.appendChild(h)}
-if(n&&!n.querySelector('a[href="portal.html"]')){const a=document.createElement('a');a.href='portal.html';a.textContent='Player Portal';const admin=n.querySelector('a[href="admin.html"]');if(admin)n.insertBefore(a,admin);else n.appendChild(a)}if(b&&n)b.onclick=()=>n.classList.toggle('open')}
 
 function bagItems(p){
  if(Array.isArray(p.witbItems))return p.witbItems;
