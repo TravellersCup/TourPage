@@ -1,0 +1,3 @@
+import { createHmac,timingSafeEqual } from 'node:crypto';
+export function playerUsername(req){const c=req.headers.get('cookie')||'';const m=c.match(/(?:^|;\s*)tt_player=([^;]+)/);const secret=process.env.ADMIN_SESSION_SECRET;if(!m||!secret)return null;const raw=decodeURIComponent(m[1]);const pos=raw.lastIndexOf('.');if(pos<1)return null;const u=raw.slice(0,pos),sig=raw.slice(pos+1);const expected=createHmac('sha256',secret).update('travellers-player-v1:'+u).digest('base64url');try{return timingSafeEqual(Buffer.from(sig),Buffer.from(expected))?u:null}catch{return null}}
+export default async req=>{const u=playerUsername(req);return u?new Response(JSON.stringify({ok:true,username:u}),{headers:{'Content-Type':'application/json'}}):new Response('Unauthorized',{status:401})};

@@ -24,3 +24,21 @@ SECURITY
 - Use a strong password rather than a short PIN for a public site.
 - ADMIN_SESSION_SECRET should be a long random value.
 - If a password or session secret was previously committed to GitHub, change/rotate it in Netlify before redeploying.
+
+
+ADMIN UPDATE — MANAGE NEWS + SHOP
+This version adds Manage Tour News and Manage Tour Shop sections. Existing live Netlify Blob data is NOT reset by deploying these files. You can edit/delete existing articles and shop products, and replacing an image is optional.
+
+
+PLAYER PORTAL UPDATE
+The player portal adds attendance, personal stats, profile editing, What's in the Bag, voting polls and digital membership cards. Attendance responses appear publicly on the Tournaments page. Admin can create/edit/delete polls and manage member IDs, member-since, status, card level, linked player and portal passwords.
+
+INITIAL PORTAL ACCOUNTS
+Four usernames are preconfigured in the code: KAI, FLETCHER, XAVIER and ANDRE. Their password VALUES must NOT be committed to GitHub. Add the following environment-variable KEYS in Netlify and use the password values supplied separately by the Tour Admin:
+PLAYER_PASSWORD_KAI
+PLAYER_PASSWORD_FLETCHER
+PLAYER_PASSWORD_XAVIER
+PLAYER_PASSWORD_ANDRE
+Set them as secret environment variables for Production (and the other deploy contexts if you use them).
+
+After a password is reset in the Admin dashboard, the reset password is stored as a salted scrypt hash in Netlify Blobs and overrides the initial environment-variable password.

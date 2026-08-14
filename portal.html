@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Player Portal | The Travellers Tour</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="site-header"><a class="brand" href="index.html"><img src="images/logo.png" alt="Travellers Tour logo"><span>THE TRAVELLERS TOUR</span></a><button class="menu-button" id="menuButton">☰</button><nav id="nav"><a href="index.html">Home</a><a href="standings.html">Standings</a><a href="mvp.html">MVP</a><a href="players.html">Players</a><a href="tournaments.html">Tournaments</a><a href="records.html">Records</a><a href="news.html">News</a><a href="gallery.html">Gallery</a><a href="shop.html">Shop</a><a href="portal.html">Player Portal</a><a href="admin.html">Admin</a></nav></header>
+<main>
+<div id="portalLogin" class="portal-login"><img src="images/logo.png" alt=""><p class="eyebrow">Members only</p><h2>Player Portal</h2><p>Log in with your Travellers Tour member username and password.</p><form id="portalLoginForm"><label>Username<input id="portalUsername" autocomplete="username" required></label><label>Password<input id="portalPassword" type="password" autocomplete="current-password" required></label><button class="button">Log In</button><p id="portalLoginError" class="error" hidden>Incorrect username or password.</p></form></div>
+<div id="portalContent" class="portal-shell" hidden><div class="portal-header"><div><p class="eyebrow">Member dashboard</p><h1 id="portalWelcome">Player Portal</h1></div><div class="portal-actions"><a class="secondary-button" href="tournaments.html">Public Attendance</a><button id="portalLogout" class="secondary-button">Log Out</button></div></div><div id="portalMessage" class="portal-message" hidden></div>
+<div class="portal-grid">
+<section class="portal-panel wide"><h2>Digital Membership Card</h2><div id="membershipCard"></div></section>
+<section class="portal-panel"><h2>Personal Stats</h2><div id="portalStats" class="portal-stats"></div></section>
+<section class="portal-panel"><h2>Profile Editor</h2><form id="profileForm"><img id="profilePreview" class="portal-avatar-preview" hidden><label>Profile picture<input id="profileImage" type="file" accept="image/*"></label><label>Bio<textarea id="profileBio" rows="5"></textarea></label><label>What's in the Bag<textarea id="profileWitb" rows="8" placeholder="Driver: ...
+Irons: ...
+Wedges: ...
+Putter: ..."></textarea></label><br><button class="button">Save Profile</button></form></section>
+<section class="portal-panel wide"><h2>Event Attendance</h2><p class="meta">Your response is public on the Tournaments page.</p><div id="portalAttendance" class="attendance-list"></div></section>
+<section class="portal-panel wide"><h2>Voting Polls</h2><div id="portalPolls" class="poll-list"></div></section>
+</div></div></main><footer><img src="images/logo.png" alt=""><p>© 2026 The Travellers Tour</p></footer><script src="portal.js"></script></body></html>
