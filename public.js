@@ -5,37 +5,12 @@ const dateFmt=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-AU',{day:'nume
 const media=src=>src?`<div class="media-frame"><img src="${esc(src)}" alt=""></div>`:`<div class="media-frame"><span class="meta">No photo</span></div>`;
 function setupNav(){
  const b=document.getElementById('menuButton'),n=document.getElementById('nav');
- if(b&&n)b.onclick=()=>n.classList.toggle('open');
+ if(b&&n)b.addEventListener('click',()=>n.classList.toggle('open'));
  document.querySelectorAll('.nav-dropbtn').forEach(btn=>btn.addEventListener('click',()=>{if(window.innerWidth<=900)btn.parentElement.classList.toggle('open')}));
 }
-
-function bagItems(p){
- if(Array.isArray(p.witbItems))return p.witbItems;
- if(typeof p.witb==='string'&&p.witb.trim())return [{club:'Other',brand:'',shaft:'',grip:'',photo:'',modification:p.witb.trim()}];
- return [];
-}
-function witbTable(p){
- const items=bagItems(p);
- if(!items.length)return '<p class="meta">No equipment has been added yet.</p>';
- return `<div class="witb-table-wrap"><table class="witb-table"><thead><tr><th>Club</th><th>Brand</th><th>Shaft</th><th>Grip</th><th>Photo</th><th>Modification</th></tr></thead><tbody>${items.map(r=>`<tr><td><strong>${esc(r.club||'—')}</strong></td><td>${esc(r.brand||'—')}</td><td>${esc(r.shaft||'—')}</td><td>${esc(r.grip||'—')}</td><td>${r.photo?`<img class="witb-thumb" src="${esc(r.photo)}" alt="${esc(r.club||'Club')}">`:'—'}</td><td>${esc(r.modification||'—')}</td></tr>`).join('')}</tbody></table></div>`;
-}
-
-
-function memberCardForPlayer(p,d){
- const m=(d.members||[]).find(x=>x.playerId===p.id);
- if(!m)return '';
- const photo=p.image||'images/logo.png';
- return `<section class="public-member-card-wrap"><div class="public-member-card">
-   <div class="public-member-card-top"><img src="${esc(photo)}" alt="${esc(p.name)}"><div><p class="eyebrow">The Travellers Tour</p><h2>${esc(p.name)}</h2><span class="status">${esc(m.status||p.status||'Tour Member')}</span></div></div>
-   <div class="public-member-card-grid">
-     <div><small>Member ID</small><strong>${esc(m.memberId||'—')}</strong></div>
-     <div><small>Member Since</small><strong>${esc(m.memberSince||'—')}</strong></div>
-     <div><small>Card Level</small><strong>${esc(m.cardLevel||'Member')}</strong></div>
-     <div><small>Valid Through</small><strong>${esc(m.validThrough||'—')}</strong></div>
-   </div>
- </div></section>`;
-}
-
+function bagItems(p){if(Array.isArray(p.witbItems))return p.witbItems;if(typeof p.witb==='string'&&p.witb.trim())return [{club:'Other',brand:'',shaft:'',grip:'',photo:'',modification:p.witb.trim()}];return []}
+function witbTable(p){const items=bagItems(p);if(!items.length)return '<p class="meta">No equipment has been added yet.</p>';return `<div class="witb-table-wrap"><table class="witb-table"><thead><tr><th>Club</th><th>Brand</th><th>Shaft</th><th>Grip</th><th>Photo</th><th>Modification</th></tr></thead><tbody>${items.map(r=>`<tr><td><strong>${esc(r.club||'—')}</strong></td><td>${esc(r.brand||'—')}</td><td>${esc(r.shaft||'—')}</td><td>${esc(r.grip||'—')}</td><td>${r.photo?`<img class="witb-thumb" src="${esc(r.photo)}" alt="${esc(r.club||'Club')}">`:'—'}</td><td>${esc(r.modification||'—')}</td></tr>`).join('')}</tbody></table></div>`}
+function memberCardForPlayer(p,d){const m=(d.members||[]).find(x=>x.playerId===p.id);if(!m)return '';const photo=p.image||'images/logo.png';return `<section class="public-member-card-wrap"><div class="public-member-card"><div class="public-member-card-top"><img src="${esc(photo)}" alt="${esc(p.name)}"><div><p class="eyebrow">The Travellers Tour</p><h2>${esc(p.name)}</h2><span class="status">${esc(m.status||p.status||'Tour Member')}</span></div></div><div class="public-member-card-grid"><div><small>Member ID</small><strong>${esc(m.memberId||'—')}</strong></div><div><small>Member Since</small><strong>${esc(m.memberSince||'—')}</strong></div><div><small>Card Level</small><strong>${esc(m.cardLevel||'Member')}</strong></div><div><small>Valid Through</small><strong>${esc(m.validThrough||'—')}</strong></div></div></div></section>`}
 function attendanceHtml(t){const map=(DATA&&DATA.attendance&&DATA.attendance[t.id])||{};const entries=Object.values(map);if(!entries.length)return `<div class="attendance-public"><strong>Attendance</strong><p class="meta">No responses yet.</p></div>`;const label=s=>s==='going'?'Going':s==='maybe'?'Maybe':'Not Going';const cls=s=>s==='going'?'attendance-going':s==='maybe'?'attendance-maybe':'attendance-not-going';return `<div class="attendance-public"><strong>Attendance</strong><ul>${entries.sort((a,b)=>(a.displayName||'').localeCompare(b.displayName||'')).map(a=>`<li class="${cls(a.status)}">${esc(a.displayName||a.username||'Member')} — ${label(a.status)}</li>`).join('')}</ul></div>`}
 function tournamentCard(t){return `<article class="card">${media(t.image)}<div class="card-body"><span class="tag">${esc(t.type)}</span><h3>${esc(t.name)}</h3><p class="meta">${esc(t.course)}<br>${dateFmt(t.date)}</p><p><strong>${t.status==='completed'?(t.winner?'Winner: '+esc(t.winner):'Completed'):'Upcoming'}</strong>${t.score?`<br>${esc(t.score)}`:''}</p>${t.status!=='completed'?attendanceHtml(t):''}</div></article>`}
 async function init(){setupNav();try{const d=await loadData();
@@ -49,7 +24,6 @@ if(document.getElementById('upcomingGrid')){const u=d.tournaments.filter(t=>t.st
 if(document.getElementById('recordsGrid'))recordsGrid.innerHTML=d.records.map(r=>`<article class="record-card"><div class="card-body"><h3>${esc(r.title)}</h3><p>${esc(r.description)}</p></div></article>`).join('')||'<p>No event records yet.</p>';
 if(document.getElementById('newsGrid'))newsGrid.innerHTML=d.news.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(n=>`<article class="news-card">${media(n.image)}<div class="card-body"><span class="tag">${dateFmt(n.date)}</span><h3>${esc(n.headline)}</h3><p>${esc(n.summary)}</p><a class="button" href="article.html?id=${encodeURIComponent(n.id)}">Read full article</a></div></article>`).join('');
 if(document.getElementById('articleBody')){const id=new URLSearchParams(location.search).get('id'),n=d.news.find(x=>x.id===id);if(!n){articleTitle.textContent='Article not found'}else{articleTitle.textContent=n.headline;articleMeta.textContent=dateFmt(n.date);if(n.image){articleImage.src=n.image;articleImage.hidden=false}articleBody.textContent=n.body}}
-if(document.getElementById('galleryGrid')){galleryGrid.innerHTML=d.gallery.map(src=>`<div class="gallery-item">${media(src)}</div>`).join('');galleryGrid.querySelectorAll('img').forEach(img=>img.onclick=()=>{lightboxImage.src=img.src;lightbox.hidden=false});closeLightbox.onclick=()=>lightbox.hidden=true;lightbox.onclick=e=>{if(e.target===lightbox)lightbox.hidden=true}}
 if(document.getElementById('witbPlayers'))witbPlayers.innerHTML=d.players.map(p=>`<section class="witb-player-card"><div class="witb-player-head">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:''}<div><span class="status">${esc(p.status||'Tour Member')}</span><h2>${esc(p.name)}</h2><a href="player.html?id=${encodeURIComponent(p.id)}">View player profile</a></div></div>${witbTable(p)}</section>`).join('')||'<p>No player equipment has been added yet.</p>';
 if(document.getElementById('howPageTitle')){const h=d.howItWorks||{};howPageTitle.textContent=h.title||'How the Tour Works';document.getElementById('howIntro').textContent=h.intro||'';document.getElementById('howBody').textContent=h.body||'';}
 if(document.getElementById('shopGrid'))shopGrid.innerHTML=d.shop.map(s=>`<article class="shop-card">${media(s.image)}<div class="card-body"><h3>${esc(s.name)}</h3><p><strong>${esc(s.price)}</strong></p><p>${esc(s.description||'')}</p>${s.link?`<a class="button" href="${esc(s.link)}" target="_blank" rel="noopener">Purchase</a>`:'<span class="tag">Contact tour to purchase</span>'}</div></article>`).join('');

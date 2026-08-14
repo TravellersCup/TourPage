@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Player Portal | The Travellers Tour</title><link rel="stylesheet" href="style.css"></head><body>
 <header class="site-header">
   <a class="brand" href="index.html"><img src="images/logo.png" alt="Travellers Tour logo"><span>THE TRAVELLERS TOUR</span></a>
-  <button class="menu-button" id="menuButton">☰</button>
+  <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">☰</button>
   <nav id="nav" class="main-nav">
     <a href="index.html">Home</a>
     <div class="nav-dropdown">
@@ -22,9 +22,7 @@
     </div>
     <div class="nav-dropdown">
       <button class="nav-dropbtn" type="button">Events ▾</button>
-      <div class="nav-dropmenu">
-        <a href="tournaments.html">Tournaments</a>
-      </div>
+      <div class="nav-dropmenu"><a href="tournaments.html">Tournaments</a></div>
     </div>
     <a href="news.html">News</a>
     <a href="shop.html">Shop</a>
@@ -38,12 +36,7 @@
 <div class="portal-grid">
 <section class="portal-panel wide"><h2>Digital Membership Card</h2><div id="membershipCard"></div></section>
 <section class="portal-panel"><h2>Personal Stats</h2><div id="portalStats" class="portal-stats"></div></section>
-<section class="portal-panel"><h2>Profile Editor</h2><form id="profileForm"><img id="profilePreview" class="portal-avatar-preview" hidden><label>Profile picture<input id="profileImage" type="file" accept="image/*"></label><label>Bio<textarea id="profileBio" rows="5"></textarea></label><div class="witb-editor-block">
-<h3>What's in the Bag</h3>
-<p class="meta">Add each club separately. Fill in as much or as little detail as you want.</p>
-<div id="witbEditor" class="witb-editor"></div>
-<button id="addWitbRow" type="button" class="secondary-button">+ Add Club</button>
-</div><br><button class="button">Save Profile</button></form></section>
+<section class="portal-panel"><h2>Profile Editor</h2><form id="profileForm"><img id="profilePreview" class="portal-avatar-preview" hidden><label>Profile picture<input id="profileImage" type="file" accept="image/*"></label><label>Bio<textarea id="profileBio" rows="5"></textarea></label><div class="witb-editor-block"><h3>What's in the Bag</h3><p class="meta">Add each item below. Each club has clear fields for Club, Brand, Shaft, Grip, Photo and Modification.</p><div id="witbEditor" class="witb-editor"></div><button id="addWitbRow" type="button" class="secondary-button">+ Add Club</button></div><br><button class="button">Save Profile</button></form></section>
 <section class="portal-panel wide"><h2>Event Attendance</h2><p class="meta">Your response is public on the Tournaments page.</p><div id="portalAttendance" class="attendance-list"></div></section>
 <section class="portal-panel wide"><h2>Voting Polls</h2><div id="portalPolls" class="poll-list"></div></section>
 </div></div></main><footer><img src="images/logo.png" alt=""><p>© 2026 The Travellers Tour</p></footer><script src="portal.js"></script></body></html>

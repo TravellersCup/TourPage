@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin | The Travellers Tour</title><link rel="stylesheet" href="style.css"></head><body><header class="site-header">
   <a class="brand" href="index.html"><img src="images/logo.png" alt="Travellers Tour logo"><span>THE TRAVELLERS TOUR</span></a>
-  <button class="menu-button" id="menuButton">☰</button>
+  <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">☰</button>
   <nav id="nav" class="main-nav">
     <a href="index.html">Home</a>
     <div class="nav-dropdown">
@@ -21,9 +21,7 @@
     </div>
     <div class="nav-dropdown">
       <button class="nav-dropbtn" type="button">Events ▾</button>
-      <div class="nav-dropmenu">
-        <a href="tournaments.html">Tournaments</a>
-      </div>
+      <div class="nav-dropmenu"><a href="tournaments.html">Tournaments</a></div>
     </div>
     <a href="news.html">News</a>
     <a href="shop.html">Shop</a>
@@ -47,29 +45,10 @@
 Option 2
 Option 3" required></textarea></label><label class="checkbox-row"><input id="pollActive" type="checkbox" checked> Poll is open for voting</label></div><button class="button">Create Poll</button></form></details>
 <details><summary>Manage Voting Polls</summary><form id="editPollForm" class="admin-form"><div class="form-grid"><label>Choose poll<select id="ePollSelect"></select></label><label class="checkbox-row"><input id="ePollActive" type="checkbox"> Poll is open</label><label class="full">Question<input id="ePollQuestion" required></label><label class="full">Options — one per line<textarea id="ePollOptions" rows="5" required></textarea><span class="option-hint">Changing poll options will reset existing votes so results stay accurate.</span></label></div><button class="button">Save Poll</button> <button type="button" id="deletePoll" class="danger-button">Delete Poll</button></form></details>
-<details><summary>Player Portal Members & Credentials</summary><div class="admin-form"><p class="admin-help">Edit digital membership card details, link a login to a player profile, or reset a member's portal password.</p><div class="form-grid"><label>Choose member<select id="memberSelect"></select></label><label>Username<input id="memberUsername" readonly></label><label>Linked player profile<select id="memberPlayerId"></select></label><label>Member ID<input id="memberId"></label><label>Member since<input id="memberSince" placeholder="2026"></label><label>Membership status<input id="memberStatus" placeholder="Tour Member"></label><label>Card level<input id="memberCardLevel" placeholder="Member"></label><label>Reset portal password<input id="memberNewPassword" type="password" placeholder="Leave blank to keep current password"></label></div><button type="button" id="saveMember" class="button">Save Member Details</button></div></details>
-<details><summary>Add Player Portal Member</summary><form id="addMemberForm" class="admin-form"><div class="form-grid"><label>Username<input id="newMemberUsername" required></label><label>Initial password<input id="newMemberPassword" type="password" required></label><label>Linked player profile<select id="newMemberPlayerId"></select></label><label>Member ID<input id="newMemberId"></label><label>Member since<input id="newMemberSince" value="2026"></label><label>Status<input id="newMemberStatus" value="Tour Member"></label><label>Card level<input id="newMemberCardLevel" value="Member"></label></div><button class="button">Add Portal Member</button></form></details>
-<details><summary>Add Winner Graphic</summary><form id="galleryForm" class="admin-form"><label>Graphic<input id="gImage" type="file" accept="image/*" required></label><br><button class="button">Add to Gallery</button></form></details>
-<details><summary>Poll Voting Results</summary>
-<div class="admin-form">
-  <div id="pollResultsAdmin" class="admin-insight-grid"></div>
-</div>
-</details>
+<details><summary>Poll Voting Results</summary><div class="admin-form"><div id="pollResultsAdmin" class="admin-insight-grid"></div></div></details>
+<details><summary>Event Attendance Overview</summary><div class="admin-form"><div id="attendanceResultsAdmin" class="admin-insight-grid"></div></div></details>
+<details><summary>Edit How the Tour Works</summary><form id="howItWorksForm" class="admin-form"><div class="form-grid"><label>Page title<input id="howTitle"></label><label class="full">Introduction<textarea id="howIntro" rows="5"></textarea></label><label class="full">Main content<textarea id="howBody" rows="18"></textarea></label></div><button class="button">Save How It Works</button></form></details>
+<details><summary>Player Portal Members & Credentials</summary><div class="admin-form"><p class="admin-help">Edit digital membership card details, link a login to a player profile, or reset a member's portal password.</p><div class="form-grid"><label>Choose member<select id="memberSelect"></select></label><label>Username<input id="memberUsername" readonly></label><label>Linked player profile<select id="memberPlayerId"></select></label><label>Member ID<input id="memberId"></label><label>Member since<input id="memberSince" placeholder="2026"></label><label>Membership status<input id="memberStatus" placeholder="Tour Member"></label><label>Card level<input id="memberCardLevel" placeholder="Member"></label><label>Valid through<input id="memberValidThrough" placeholder="e.g. 31 Dec 2026"></label><label>Reset portal password<input id="memberNewPassword" type="password" placeholder="Leave blank to keep current password"></label></div><button type="button" id="saveMember" class="button">Save Member Details</button></div></details>
+<details><summary>Add Player Portal Member</summary><form id="addMemberForm" class="admin-form"><div class="form-grid"><label>Username<input id="newMemberUsername" required></label><label>Initial password<input id="newMemberPassword" type="password" required></label><label>Linked player profile<select id="newMemberPlayerId"></select></label><label>Member ID<input id="newMemberId"></label><label>Member since<input id="newMemberSince" value="2026"></label><label>Status<input id="newMemberStatus" value="Tour Member"></label><label>Card level<input id="newMemberCardLevel" value="Member"></label><label>Valid through<input id="newMemberValidThrough" placeholder="e.g. 31 Dec 2026"></label></div><button class="button">Add Portal Member</button></form></details>
 
-<details><summary>Event Attendance Overview</summary>
-<div class="admin-form">
-  <div id="attendanceResultsAdmin" class="admin-insight-grid"></div>
-</div>
-</details>
-
-<details><summary>Edit How the Tour Works</summary>
-<form id="howItWorksForm" class="admin-form">
-  <div class="form-grid">
-    <label>Page title<input id="howTitle" placeholder="How the Travellers Tour Works"></label>
-    <label class="full">Introduction<textarea id="howIntro" rows="5" placeholder="Explain the tour in a short introduction."></textarea></label>
-    <label class="full">Main content<textarea id="howBody" rows="18" placeholder="Explain regular season events, points, majors, MVP Golden Ball, Tour Cards, Championship qualification, special events, etc."></textarea></label>
-  </div>
-  <button class="button" type="submit">Save How It Works</button>
-</form>
-</details>
 <p class="meta">All changes are stored online and become visible to public visitors as soon as the save completes.</p></section></div></main><footer><img src="images/logo.png" alt=""><p>© 2026 The Travellers Tour</p></footer><script src="admin.js"></script></body></html>
