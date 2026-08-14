@@ -1,10 +1,10 @@
 import { getStore } from '@netlify/blobs';
 import { randomBytes,scryptSync,timingSafeEqual,createHmac } from 'node:crypto';
 const seed=[
- {username:'KAI',playerName:'Kai Lucas',playerId:'kai-lucas',memberId:'TC-001',memberSince:'2026',status:'Tour Member',cardLevel:'Member'},
- {username:'FLETCHER',playerName:'Fletcher Gaffney',playerId:'fletcher-gaffney',memberId:'TC-002',memberSince:'2026',status:'Tour Member',cardLevel:'Member'},
- {username:'XAVIER',playerName:'Xavier Minogue',playerId:'xavier-minogue',memberId:'TC-003',memberSince:'2026',status:'Tour Member',cardLevel:'Member'},
- {username:'ANDRE',playerName:'Andre',playerId:'',memberId:'TC-004',memberSince:'2026',status:'Tour Member',cardLevel:'Member'}];
+ {username:'KAI',playerName:'Kai Lucas',playerId:'kai-lucas',memberId:'TC-001',memberSince:'2026',status:'Tour Member',cardLevel:'Member',validThrough:''},
+ {username:'FLETCHER',playerName:'Fletcher Gaffney',playerId:'fletcher-gaffney',memberId:'TC-002',memberSince:'2026',status:'Tour Member',cardLevel:'Member',validThrough:''},
+ {username:'XAVIER',playerName:'Xavier Minogue',playerId:'xavier-minogue',memberId:'TC-003',memberSince:'2026',status:'Tour Member',cardLevel:'Member',validThrough:''},
+ {username:'ANDRE',playerName:'Andre',playerId:'',memberId:'TC-004',memberSince:'2026',status:'Tour Member',cardLevel:'Member',validThrough:''}];
 function adminOk(req){const cookie=req.headers.get('cookie')||'';const m=cookie.match(/(?:^|;\s*)tt_admin=([^;]+)/);const s=process.env.ADMIN_SESSION_SECRET;if(!m||!s)return false;const x=createHmac('sha256',s).update('travellers-admin-v1').digest('base64url');return timingSafeEqual(Buffer.from(m[1]),Buffer.from(x))}
 const safe=a=>({username:a.username,playerName:a.playerName||'',playerId:a.playerId||'',memberId:a.memberId||'',memberSince:a.memberSince||'',status:a.status||'Tour Member',cardLevel:a.cardLevel||'Member'});
 function hashPassword(p){const salt=randomBytes(16).toString('hex');const hash=scryptSync(p,salt,64).toString('hex');return {passwordSalt:salt,passwordHash:hash}}

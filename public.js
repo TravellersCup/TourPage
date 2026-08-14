@@ -3,7 +3,37 @@ async function loadData(){const r=await fetch('/.netlify/functions/data',{cache:
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const dateFmt=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
 const media=src=>src?`<div class="media-frame"><img src="${esc(src)}" alt=""></div>`:`<div class="media-frame"><span class="meta">No photo</span></div>`;
-function setupNav(){const b=document.getElementById('menuButton'),n=document.getElementById('nav');if(n&&!n.querySelector('a[href="portal.html"]')){const a=document.createElement('a');a.href='portal.html';a.textContent='Player Portal';const admin=n.querySelector('a[href="admin.html"]');if(admin)n.insertBefore(a,admin);else n.appendChild(a)}if(b&&n)b.onclick=()=>n.classList.toggle('open')}
+function setupNav(){const b=document.getElementById('menuButton'),n=document.getElementById('nav');if(n&&!n.querySelector('a[href="witb.html"]')){const w=document.createElement('a');w.href='witb.html';w.textContent="What's in the Bag";const portal=n.querySelector('a[href="portal.html"]'),admin=n.querySelector('a[href="admin.html"]');if(portal)n.insertBefore(w,portal);else if(admin)n.insertBefore(w,admin);else n.appendChild(w)}
+if(n&&!n.querySelector('a[href="how-it-works.html"]')){const h=document.createElement('a');h.href='how-it-works.html';h.textContent='How the Tour Works';const portal=n.querySelector('a[href="portal.html"]'),admin=n.querySelector('a[href="admin.html"]');if(portal)n.insertBefore(h,portal);else if(admin)n.insertBefore(h,admin);else n.appendChild(h)}
+if(n&&!n.querySelector('a[href="portal.html"]')){const a=document.createElement('a');a.href='portal.html';a.textContent='Player Portal';const admin=n.querySelector('a[href="admin.html"]');if(admin)n.insertBefore(a,admin);else n.appendChild(a)}if(b&&n)b.onclick=()=>n.classList.toggle('open')}
+
+function bagItems(p){
+ if(Array.isArray(p.witbItems))return p.witbItems;
+ if(typeof p.witb==='string'&&p.witb.trim())return [{club:'Other',brand:'',shaft:'',grip:'',photo:'',modification:p.witb.trim()}];
+ return [];
+}
+function witbTable(p){
+ const items=bagItems(p);
+ if(!items.length)return '<p class="meta">No equipment has been added yet.</p>';
+ return `<div class="witb-table-wrap"><table class="witb-table"><thead><tr><th>Club</th><th>Brand</th><th>Shaft</th><th>Grip</th><th>Photo</th><th>Modification</th></tr></thead><tbody>${items.map(r=>`<tr><td><strong>${esc(r.club||'—')}</strong></td><td>${esc(r.brand||'—')}</td><td>${esc(r.shaft||'—')}</td><td>${esc(r.grip||'—')}</td><td>${r.photo?`<img class="witb-thumb" src="${esc(r.photo)}" alt="${esc(r.club||'Club')}">`:'—'}</td><td>${esc(r.modification||'—')}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+
+function memberCardForPlayer(p,d){
+ const m=(d.members||[]).find(x=>x.playerId===p.id);
+ if(!m)return '';
+ const photo=p.image||'images/logo.png';
+ return `<section class="public-member-card-wrap"><div class="public-member-card">
+   <div class="public-member-card-top"><img src="${esc(photo)}" alt="${esc(p.name)}"><div><p class="eyebrow">The Travellers Tour</p><h2>${esc(p.name)}</h2><span class="status">${esc(m.status||p.status||'Tour Member')}</span></div></div>
+   <div class="public-member-card-grid">
+     <div><small>Member ID</small><strong>${esc(m.memberId||'—')}</strong></div>
+     <div><small>Member Since</small><strong>${esc(m.memberSince||'—')}</strong></div>
+     <div><small>Card Level</small><strong>${esc(m.cardLevel||'Member')}</strong></div>
+     <div><small>Valid Through</small><strong>${esc(m.validThrough||'—')}</strong></div>
+   </div>
+ </div></section>`;
+}
+
 function attendanceHtml(t){const map=(DATA&&DATA.attendance&&DATA.attendance[t.id])||{};const entries=Object.values(map);if(!entries.length)return `<div class="attendance-public"><strong>Attendance</strong><p class="meta">No responses yet.</p></div>`;const label=s=>s==='going'?'Going':s==='maybe'?'Maybe':'Not Going';const cls=s=>s==='going'?'attendance-going':s==='maybe'?'attendance-maybe':'attendance-not-going';return `<div class="attendance-public"><strong>Attendance</strong><ul>${entries.sort((a,b)=>(a.displayName||'').localeCompare(b.displayName||'')).map(a=>`<li class="${cls(a.status)}">${esc(a.displayName||a.username||'Member')} — ${label(a.status)}</li>`).join('')}</ul></div>`}
 function tournamentCard(t){return `<article class="card">${media(t.image)}<div class="card-body"><span class="tag">${esc(t.type)}</span><h3>${esc(t.name)}</h3><p class="meta">${esc(t.course)}<br>${dateFmt(t.date)}</p><p><strong>${t.status==='completed'?(t.winner?'Winner: '+esc(t.winner):'Completed'):'Upcoming'}</strong>${t.score?`<br>${esc(t.score)}`:''}</p>${t.status!=='completed'?attendanceHtml(t):''}</div></article>`}
 async function init(){setupNav();try{const d=await loadData();
@@ -12,12 +42,14 @@ if(document.getElementById('homeNews'))homeNews.innerHTML=d.news.slice().sort((a
 if(document.getElementById('standingsBody'))standingsBody.innerHTML=d.players.slice().sort((a,b)=>b.points-a.points).map((p,i)=>`<tr><td>${i+1}</td><td><a href="player.html?id=${encodeURIComponent(p.id)}"><strong>${esc(p.name)}</strong></a></td><td>${p.points||0}</td><td>${p.wins||0}</td><td>${p.seconds||0}</td><td>${p.majors||0}</td></tr>`).join('');
 if(document.getElementById('mvpBody'))mvpBody.innerHTML=d.players.slice().sort((a,b)=>(b.mvp||0)-(a.mvp||0)).map((p,i)=>`<tr><td>${i+1}</td><td><a href="player.html?id=${encodeURIComponent(p.id)}"><strong>${esc(p.name)}</strong></a></td><td>${p.mvp||0}</td></tr>`).join('');
 if(document.getElementById('playersGrid'))playersGrid.innerHTML=d.players.map(p=>`<article class="card player-card">${media(p.image)}<div class="card-body"><span class="status">${esc(p.status||'Tour Member')}</span><h3>${esc(p.name)}</h3><p class="meta">${p.points||0} points · ${p.wins||0} wins · ${p.majors||0} majors</p><p>${esc(p.bio||'')}</p><a class="button" href="player.html?id=${encodeURIComponent(p.id)}">View profile</a></div></article>`).join('');
-if(document.getElementById('playerDetail')){const id=new URLSearchParams(location.search).get('id'),p=d.players.find(x=>x.id===id);if(!p){playerTitle.textContent='Player not found';playerDetail.innerHTML='<p>That player profile could not be found.</p>'}else{playerTitle.textContent=p.name;playerDetail.innerHTML=`<div class="split"><div>${media(p.image)}</div><div><span class="status">${esc(p.status||'Tour Member')}</span><h2>${esc(p.name)}</h2><p class="meta">${p.points||0} season points · ${p.wins||0} wins · ${p.seconds||0} runner-up finishes · ${p.majors||0} majors · ${p.mvp||0} MVP points</p><p>${esc(p.bio||'')}</p></div></div><div class="article-body" style="margin-top:35px">${esc(p.longBio||p.bio||'')}</div>`}}
+if(document.getElementById('playerDetail')){const id=new URLSearchParams(location.search).get('id'),p=d.players.find(x=>x.id===id);if(!p){playerTitle.textContent='Player not found';playerDetail.innerHTML='<p>That player profile could not be found.</p>'}else{playerTitle.textContent=p.name;playerDetail.innerHTML=`<div class="split"><div>${media(p.image)}</div><div><span class="status">${esc(p.status||'Tour Member')}</span><h2>${esc(p.name)}</h2><p class="meta">${p.points||0} season points · ${p.wins||0} wins · ${p.seconds||0} runner-up finishes · ${p.majors||0} majors · ${p.mvp||0} MVP points</p><p>${esc(p.bio||'')}</p></div></div><div class="article-body" style="margin-top:35px">${esc(p.longBio||p.bio||'')}</div>${memberCardForPlayer(p,d)}<section class="player-witb-section"><div class="witb-section-head"><h2>What's in the Bag</h2><a class="secondary-button" href="witb.html">View all players</a></div>${witbTable(p)}</section>`}}
 if(document.getElementById('upcomingGrid')){const u=d.tournaments.filter(t=>t.status!=='completed').sort((a,b)=>a.date.localeCompare(b.date));const c=d.tournaments.filter(t=>t.status==='completed').sort((a,b)=>b.date.localeCompare(a.date));upcomingGrid.innerHTML=u.map(tournamentCard).join('')||'<p>No upcoming tournaments.</p>';completedGrid.innerHTML=c.map(tournamentCard).join('')||'<p>No completed tournaments.</p>'}
 if(document.getElementById('recordsGrid'))recordsGrid.innerHTML=d.records.map(r=>`<article class="record-card"><div class="card-body"><h3>${esc(r.title)}</h3><p>${esc(r.description)}</p></div></article>`).join('')||'<p>No event records yet.</p>';
 if(document.getElementById('newsGrid'))newsGrid.innerHTML=d.news.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(n=>`<article class="news-card">${media(n.image)}<div class="card-body"><span class="tag">${dateFmt(n.date)}</span><h3>${esc(n.headline)}</h3><p>${esc(n.summary)}</p><a class="button" href="article.html?id=${encodeURIComponent(n.id)}">Read full article</a></div></article>`).join('');
 if(document.getElementById('articleBody')){const id=new URLSearchParams(location.search).get('id'),n=d.news.find(x=>x.id===id);if(!n){articleTitle.textContent='Article not found'}else{articleTitle.textContent=n.headline;articleMeta.textContent=dateFmt(n.date);if(n.image){articleImage.src=n.image;articleImage.hidden=false}articleBody.textContent=n.body}}
 if(document.getElementById('galleryGrid')){galleryGrid.innerHTML=d.gallery.map(src=>`<div class="gallery-item">${media(src)}</div>`).join('');galleryGrid.querySelectorAll('img').forEach(img=>img.onclick=()=>{lightboxImage.src=img.src;lightbox.hidden=false});closeLightbox.onclick=()=>lightbox.hidden=true;lightbox.onclick=e=>{if(e.target===lightbox)lightbox.hidden=true}}
+if(document.getElementById('witbPlayers'))witbPlayers.innerHTML=d.players.map(p=>`<section class="witb-player-card"><div class="witb-player-head">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:''}<div><span class="status">${esc(p.status||'Tour Member')}</span><h2>${esc(p.name)}</h2><a href="player.html?id=${encodeURIComponent(p.id)}">View player profile</a></div></div>${witbTable(p)}</section>`).join('')||'<p>No player equipment has been added yet.</p>';
+if(document.getElementById('howPageTitle')){const h=d.howItWorks||{};howPageTitle.textContent=h.title||'How the Tour Works';document.getElementById('howIntro').textContent=h.intro||'';document.getElementById('howBody').textContent=h.body||'';}
 if(document.getElementById('shopGrid'))shopGrid.innerHTML=d.shop.map(s=>`<article class="shop-card">${media(s.image)}<div class="card-body"><h3>${esc(s.name)}</h3><p><strong>${esc(s.price)}</strong></p><p>${esc(s.description||'')}</p>${s.link?`<a class="button" href="${esc(s.link)}" target="_blank" rel="noopener">Purchase</a>`:'<span class="tag">Contact tour to purchase</span>'}</div></article>`).join('');
 }catch(e){document.querySelectorAll('.loading').forEach(x=>x.textContent='Unable to load live data.')}}
 init();

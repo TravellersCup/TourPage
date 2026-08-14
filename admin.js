@@ -38,9 +38,23 @@ pollForm.onsubmit=async e=>{e.preventDefault();const opts=pollOptions.value.spli
 editPollForm.onsubmit=async e=>{e.preventDefault();const p=DATA.polls[+ePollSelect.value];if(!p)return;const opts=ePollOptions.value.split('\n').map(x=>x.trim()).filter(Boolean);if(opts.length<2)return alert('Please enter at least two options.');const before=pollLines(p);const after=opts.join('\n');if(before!==after&&Object.keys(p.votes||{}).length&& !confirm('Changing the options will reset all votes for this poll. Continue?'))return;p.question=ePollQuestion.value.trim();p.active=ePollActive.checked;if(before!==after){p.options=opts.map(text=>({text}));p.votes={}}await save();alert('Poll updated.')}
 deletePoll.onclick=async()=>{const i=+ePollSelect.value;if(!DATA.polls[i])return;if(confirm('Delete this poll?')){DATA.polls.splice(i,1);await save();alert('Poll deleted.')}}
 function renderMembers(){memberSelect.innerHTML=MEMBERS.map((m,i)=>`<option value="${i}">${esc(m.username)}</option>`).join('');const playerOpts='<option value="">Not linked</option>'+DATA.players.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');memberPlayerId.innerHTML=playerOpts;newMemberPlayerId.innerHTML=playerOpts;loadMember()}
-function loadMember(){const m=MEMBERS[+memberSelect.value||0];if(!m){memberUsername.value='';memberId.value='';memberSince.value='';memberStatus.value='';memberCardLevel.value='';memberPlayerId.value='';return}memberUsername.value=m.username||'';memberId.value=m.memberId||'';memberSince.value=m.memberSince||'';memberStatus.value=m.status||'Tour Member';memberCardLevel.value=m.cardLevel||'Member';memberPlayerId.value=m.playerId||'';memberNewPassword.value=''}
+function loadMember(){const m=MEMBERS[+memberSelect.value||0];if(!m){memberUsername.value='';memberId.value='';memberSince.value='';memberStatus.value='';memberCardLevel.value='';memberPlayerId.value='';return}memberUsername.value=m.username||'';memberId.value=m.memberId||'';memberSince.value=m.memberSince||'';memberStatus.value=m.status||'Tour Member';memberCardLevel.value=m.cardLevel||'Member';memberValidThrough.value=m.validThrough||'';memberPlayerId.value=m.playerId||'';memberNewPassword.value=''}
 memberSelect.onchange=loadMember;
-saveMember.onclick=async()=>{const m=MEMBERS[+memberSelect.value];if(!m)return;await api('members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',username:m.username,playerId:memberPlayerId.value,memberId:memberId.value.trim(),memberSince:memberSince.value.trim(),status:memberStatus.value.trim(),cardLevel:memberCardLevel.value.trim(),newPassword:memberNewPassword.value})});MEMBERS=await api('members',{cache:'no-store'});renderMembers();alert('Member details saved.')}
+saveMember.onclick=async()=>{const m=MEMBERS[+memberSelect.value];if(!m)return;await api('members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',username:m.username,playerId:memberPlayerId.value,memberId:memberId.value.trim(),memberSince:memberSince.value.trim(),status:memberStatus.value.trim(),cardLevel:memberCardLevel.value.trim(),newPassword:memberNewPassword.value})});MEMBERS=await api('members',{cache:'no-store'});renderMembers();loadHowItWorks();alert('Member details saved.')}
 addMemberForm.onsubmit=async e=>{e.preventDefault();await api('members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',username:newMemberUsername.value.trim(),newPassword:newMemberPassword.value,playerId:newMemberPlayerId.value,memberId:newMemberId.value.trim(),memberSince:newMemberSince.value.trim(),status:newMemberStatus.value.trim(),cardLevel:newMemberCardLevel.value.trim()})});MEMBERS=await api('members',{cache:'no-store'});renderMembers();e.target.reset();newMemberSince.value='2026';newMemberStatus.value='Tour Member';newMemberCardLevel.value='Member';alert('Portal member added.')}
 
 check();
+
+
+function loadHowItWorks(){
+ const h=DATA.howItWorks||{};
+ howTitle.value=h.title||'How the Tour Works';
+ howIntro.value=h.intro||'';
+ howBody.value=h.body||'';
+}
+howItWorksForm.onsubmit=async e=>{
+ e.preventDefault();
+ DATA.howItWorks={title:howTitle.value.trim()||'How the Tour Works',intro:howIntro.value.trim(),body:howBody.value.trim()};
+ await save();
+ alert('How the Tour Works page updated.');
+};
