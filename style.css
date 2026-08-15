@@ -25,3 +25,48 @@ h1{font-size:clamp(2.6rem,7vw,5.4rem);margin:.2em 0}h2{font-size:clamp(2rem,4vw,
 .admin-insight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.admin-insight-card{border:1px solid #dbe2e9;border-radius:10px;padding:16px;background:#fafbfd}.result-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #e6ebef}.result-bar{height:8px;background:#e6ebef;border-radius:999px;overflow:hidden;margin-top:6px}.result-bar span{display:block;height:100%;background:#d8b24b}.attendance-group{margin-top:12px}.attendance-chip{display:inline-block;margin:4px 5px 4px 0;padding:6px 9px;border-radius:999px;background:#e9eef3;font-size:.86rem}
 @media(max-width:900px){.main-nav{display:none}.main-nav.open{display:flex}.nav-dropdown{width:100%}.nav-dropbtn{width:100%;text-align:left;padding:8px 0}.nav-dropmenu{position:static;display:none;margin-top:5px;width:100%;border:0;background:rgba(255,255,255,.04)}.nav-dropdown.open .nav-dropmenu{display:block}.nav-dropdown:hover .nav-dropmenu{display:none}.nav-dropdown.open:hover .nav-dropmenu{display:block}.admin-insight-grid{grid-template-columns:1fr}}
 @media(max-width:700px){.witb-fields{grid-template-columns:1fr}.public-member-card-grid{grid-template-columns:1fr 1fr}}
+
+
+/* ===== WITB SAVE / MODEL / BAG STATUS UPDATE ===== */
+.witb-row-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.witb-edit-head>div:first-child{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.witb-used-status{background:#f2e7c6}
+.witb-group{margin-top:22px}
+.witb-group:first-child{margin-top:0}
+.witb-group>h3{margin:0 0 12px}
+.witb-table{min-width:1120px}
+#profileForm .button[disabled]{opacity:.65;cursor:wait}
+
+/* ===== DESKTOP DROPDOWN HOVER FIX ===== */
+@media (min-width: 901px) {
+  .nav-dropdown {
+    position: relative;
+    padding: 12px 0;
+    margin: -12px 0;
+  }
+
+  .nav-dropbtn {
+    padding: 12px 0;
+  }
+
+  .nav-dropmenu {
+    top: 100% !important;
+    margin-top: 0 !important;
+    padding-top: 8px;
+  }
+
+  .nav-dropmenu::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -12px;
+    height: 12px;
+  }
+
+  .nav-dropdown:hover .nav-dropmenu,
+  .nav-dropdown:focus-within .nav-dropmenu,
+  .nav-dropmenu:hover {
+    display: block !important;
+  }
+}
