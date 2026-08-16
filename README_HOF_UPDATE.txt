@@ -1,0 +1,1 @@
+Adds How Tour Cards Work under Tour, plus a Hall of Fame dropdown with Hall of Fame and How the Hall of Fame Works. Admin can add/edit/delete Hall of Fame player-season entries and edit both new explanatory pages. Includes all previous WITB/save/hover-nav improvements. Existing live data is preserved. No passwords or hashes included.

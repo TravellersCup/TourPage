@@ -70,3 +70,5 @@ h1{font-size:clamp(2.6rem,7vw,5.4rem);margin:.2em 0}h2{font-size:clamp(2rem,4vw,
     display: block !important;
   }
 }
+
+.hall-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.hall-card{background:#fff;border:1px solid var(--line,#dbe2e9);border-radius:14px;overflow:hidden}.hall-season{background:#071b2f;color:#d8b24b;font-size:1.35rem;font-weight:800;padding:16px 20px}.hall-card h2{margin:.15em 0 .35em}.hall-card h3{margin:.2em 0 1em;color:#52677a}@media(max-width:900px){.hall-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.hall-grid{grid-template-columns:1fr}}
